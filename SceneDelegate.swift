@@ -23,6 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		window?.rootViewController = createTabBar()
 		
 		window?.makeKeyAndVisible()
+		
+		configureNavigationBar() 
 	}
 	
 	
@@ -46,11 +48,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
 	
 	func createTabBar() -> UITabBarController {
-		let tabBar = UITabBarController()
 		UITabBar.appearance().tintColor = .systemGreen
+		
+		let tabBar = UITabBarController()		
 		tabBar.viewControllers = [createSearchNavContr(), createFavoritesNavContr()]
 		
 		return tabBar
+	}
+	
+	
+	func configureNavigationBar() {
+		UINavigationBar.appearance().tintColor = .systemGreen
 	}
 	
 
@@ -82,7 +90,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Use this method to save data, release shared resources, and store enough scene-specific state information
 		// to restore the scene back to its current state.
 	}
-
-
 }
-
