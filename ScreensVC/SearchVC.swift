@@ -20,7 +20,7 @@ class SearchVC: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		navigationController?.isNavigationBarHidden = true
+		navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 	
 
@@ -80,7 +80,7 @@ class SearchVC: UIViewController {
 	
 	@objc func pushFollowersListVC() {
 		guard isUsernameEntered else {
-			print("No username given")
+			presentGFAlertOnMainThread(title: "Empty Username", message: "Please enter a username, we need to know who to look for", buttonTitle: "OK")
 			
 			return
 		}

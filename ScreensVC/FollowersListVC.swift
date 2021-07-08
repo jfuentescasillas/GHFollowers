@@ -12,13 +12,20 @@ class FollowersListVC: UIViewController {
 	// MARK: - Properties
 	var username: String!
 	
+	
+	// MARK: - viewWillAppear
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		 
+		navigationController?.setNavigationBarHidden(false, animated: true)
+	}
+	
 
 	// MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
 
 		view.backgroundColor = .systemBackground
-		navigationController?.isNavigationBarHidden = false
 		navigationController?.navigationBar.prefersLargeTitles = true
     }
 }
