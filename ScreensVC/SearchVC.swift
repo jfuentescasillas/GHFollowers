@@ -20,6 +20,7 @@ class SearchVC: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		// Moving this line of code to viewWill Appear deals with a bug in which the NavigationBar was involved (it disappeard when it supposed to appear)
 		navigationController?.setNavigationBarHidden(true, animated: true)
 	}
 	
