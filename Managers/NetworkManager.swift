@@ -15,30 +15,30 @@ class NetworkManager {
 	private init() {}
 	
 	
-	func getFollowers(for username: String, page: Int, completionHandler: @escaping([Follower]?, ErrorMessage?) -> Void) {
+	func getFollowers(for username: String, page: Int, completionHandler: @escaping(Result<[Follower], GFError>) -> Void) {
 		let endpoint: String = baseURL + "\(username)/followers?per_page=100&page=\(page)"
 		
 		guard let url = URL(string: endpoint) else {
-			completionHandler(nil, .invalidUsername)
+			completionHandler(.failure(.invalidUsername))
 			
 			return
 		}
 		
 		let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
 			if let _ = error {
-				completionHandler(nil, .unableToCompleteRequest)
+				completionHandler(.failure(.unableToCompleteRequest))
 				
 				return
 			}
 			
 			guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-				completionHandler(nil, .invalidResponse)
+				completionHandler(.failure(.invalidResponse))
 				
 				return
 			}
 			
 			guard let data = data else {
-				completionHandler(nil, .invalidData)
+				completionHandler(.failure(.invalidData))
 				
 				return
 			}
@@ -48,10 +48,10 @@ class NetworkManager {
 				decoder.keyDecodingStrategy = .convertFromSnakeCase
 				
 				let followers = try decoder.decode([Follower].self, from: data)
-				completionHandler(followers, nil)
+				completionHandler(.success(followers))
 			} catch {
 				//completionHandler(nil, error.localizedDescription)  // Error message meant for developer
-				completionHandler(nil, .invalidData)
+				completionHandler(.failure(.invalidData))
 			}
 		}
 		
