@@ -9,9 +9,15 @@ import UIKit
 
 
 class FollowersListVC: UIViewController {
+	enum Section { case main } // Our "main section" (aka our collectionView)
+	
 	// MARK: - Properties
 	var username: String!
 	var collectionView: UICollectionView!
+	var dataSource: UICollectionViewDiffableDataSource<Section, Follower>!
+	var followers = [Follower]()
+	var page: Int = 1
+	var hasMoreFollowers: Bool = true
 	
 
 	// MARK: - viewDidLoad
@@ -20,7 +26,8 @@ class FollowersListVC: UIViewController {
 		
 		configureViewController()
 		configureCollectionView()
-		getFollowers()
+		getFollowers(username: username, page: page)
+		configureDataSource()
     }
 	
 	
@@ -41,21 +48,30 @@ class FollowersListVC: UIViewController {
 	
 	
 	func configureCollectionView() {
-		collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnFlowLayout())
+		collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view))
 		view.addSubview(collectionView)
 		
-		collectionView.backgroundColor = .systemPink
+		collectionView.delegate = self
+		collectionView.backgroundColor = .systemBackground
 		collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
 	}
 	
 	
 	// MARK: - Get Followers
-	private func getFollowers() {
-		NetworkManager.shared.getFollowers(for: username, page: 1) { result in
+	private func getFollowers(username: String, page: Int) {
+		NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
+			guard let self = self else { return }
+			
 			switch result {
 			case .success(let followers):
-				print("Followers.count = \(followers.count)")
-				print("Followers = \(followers)")
+				/*print("Followers.count = \(followers.count)")
+				print("Followers = \(followers)")*/
+				
+				if followers.count < 100 { self.hasMoreFollowers = false }
+				
+				self.followers.append(contentsOf: followers)
+				self.updateData()
+				
 			case .failure(let error):
 				self.presentGFAlertOnMainThread(title: "Bad Stuff Happened", message: error.rawValue, buttonTitle: "OK")
 			}
@@ -63,18 +79,44 @@ class FollowersListVC: UIViewController {
 	}
 	
 	
-	// MARK: - CreateFollowLayout Method
-	func createThreeColumnFlowLayout() -> UICollectionViewFlowLayout {
-		let width = view.bounds.width
-		let padding: CGFloat = 12
-		let minimumItemSpacing: CGFloat = 10
-		let availableWidth = width - (padding * 2) - (minimumItemSpacing * 2)  // We do minimum spacing * 2 because in a 3 column layout, there are 2 spaces between the 3 items. The space between the left item and the middle item. And the space between the middle item and the right item.
-		let itemWidth = availableWidth / 3
+	// MARK: - Configure DataSource
+	func configureDataSource() {
+		dataSource = UICollectionViewDiffableDataSource<Section, Follower>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, follower) -> UICollectionViewCell? in
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.reuseID, for: indexPath) as! FollowerCell
+			cell.set(follower: follower)
+			
+			return cell
+		})
+	}
+	
+	
+	func updateData() {
+		var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
+		snapshot.appendSections([.main])
+		snapshot.appendItems(followers)
+		dataSource.apply(snapshot, animatingDifferences: true)  // Funcionó bien. OK.
+		//DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }  // Intentar después con esta línea. Comentar arriba. También funciona
+	}
+}
+
+
+extension FollowersListVC: UICollectionViewDelegate {
+	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+		let offsetY = scrollView.contentOffset.y  // y coordinate (up and down)
+		let contentHeight = scrollView.contentSize.height  // The entire scrollview, if there are 5,000 followers, it will be very tall
+		let height = scrollView.frame.size.height  // Screen's height
 		
-		let flowLayout = UICollectionViewFlowLayout()
-		flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-		flowLayout.itemSize = CGSize(width: itemWidth, height: itemWidth + 40)
+		/*print("OffsetY: \(offsetY)")
+		print("ContentHeight: \(contentHeight)")
+		print("height: \(height)")
+		print("------------")*/
 		
-		return flowLayout
+		if offsetY > contentHeight - height {
+			guard hasMoreFollowers else { return }
+			
+			page += 1
+			
+			getFollowers(username: username, page: page)
+		}
 	}
 }
