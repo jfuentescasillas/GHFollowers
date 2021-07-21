@@ -7,24 +7,25 @@
 
 import UIKit
 
+
 class GFAlertVC: UIViewController {
 	// Properties
-	let containerView = UIView()
-	let titleLabel = GFTitleLabel(textAlignment: .center, fontSize: 20)
-	let messageLabel = GFBodyLabel(textAlignment: .center)
-	let actionButton = GFButton(backgroundColor: .systemPink, title: "OK")
+	let containerView 	 = UIView()
+	let titleLabel 		 = GFTitleLabel(textAlignment: .center, fontSize: 20)
+	let messageLabel 	 = GFBodyLabel(textAlignment: .center)
+	let actionButton 	 = GFButton(backgroundColor: .systemPink, title: "OK")
+	let padding: CGFloat = 20
 	
 	var alertTitle: String?
 	var message: String?
 	var buttonTitle: String?
-	let padding: CGFloat = 20
 	
 	init(title: String, message: String, buttonTitle: String) {
 		super.init(nibName: nil, bundle: nil)
 		
-		self.alertTitle = title
-		self.message = message
-		self.buttonTitle = buttonTitle
+		self.alertTitle 	= title
+		self.message 		= message
+		self.buttonTitle 	= buttonTitle
 	}
 	
 	
