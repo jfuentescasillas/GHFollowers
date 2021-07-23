@@ -8,6 +8,11 @@
 import UIKit
 
 
+protocol FollowersListVCDelegate: AnyObject {
+	func didRequestFollowers(for username: String)
+}
+
+
 class FollowersListVC: UIViewController {
 	enum Section { case main } // Our "main section" (aka our collectionView)
 	
@@ -68,6 +73,7 @@ class FollowersListVC: UIViewController {
 		searchController.obscuresBackgroundDuringPresentation = false  // Background won't get obscured when searching in the searchbar
 		
 		navigationItem.searchController = searchController
+		navigationItem.hidesSearchBarWhenScrolling = false
 	}
 	
 	
@@ -82,8 +88,6 @@ class FollowersListVC: UIViewController {
 			
 			switch result {
 			case .success(let followers):
-				/*print("Followers.count = \(followers.count)")
-				print("Followers = \(followers)")*/
 				
 				if followers.count < 100 { self.hasMoreFollowers = false }
 				
@@ -121,8 +125,8 @@ class FollowersListVC: UIViewController {
 		var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
 		snapshot.appendSections([.main])
 		snapshot.appendItems(followers)
-		dataSource.apply(snapshot, animatingDifferences: true)  // Funcionó bien. OK.
-		//DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }  // Intentar después con esta línea. Comentar arriba. También funciona
+		//dataSource.apply(snapshot, animatingDifferences: true)  // Funcionó bien. OK.
+		DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }  // Intentar después con esta línea. Comentar arriba. También funciona
 	}
 }
 
@@ -130,14 +134,9 @@ class FollowersListVC: UIViewController {
 // MARK: - Extension: UICollectionViewDelegate
 extension FollowersListVC: UICollectionViewDelegate {
 	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-		let offsetY = scrollView.contentOffset.y  // y coordinate (up and down)
-		let contentHeight = scrollView.contentSize.height  // The entire scrollview, if there are 5,000 followers, it will be very tall
-		let height = scrollView.frame.size.height  // Screen's height
-		
-		/*print("OffsetY: \(offsetY)")
-		print("ContentHeight: \(contentHeight)")
-		print("height: \(height)")
-		print("------------")*/
+		let offsetY 		= scrollView.contentOffset.y  // y coordinate (up and down)
+		let contentHeight 	= scrollView.contentSize.height  // The entire scrollview, if there are 5,000 followers, it will be very tall
+		let height 			= scrollView.frame.size.height  // Screen's height
 		
 		if offsetY > contentHeight - height {
 			guard hasMoreFollowers else { return }
@@ -154,8 +153,9 @@ extension FollowersListVC: UICollectionViewDelegate {
 		let follower		= activeArray[indexPath.item]
 		let destVC 			= UserInfoVC()
 		destVC.username		= follower.login
-		let navController 	= UINavigationController(rootViewController: destVC)
+		destVC.delegate 	= self
 		
+		let navController 	= UINavigationController(rootViewController: destVC)		
 		present(navController, animated: true)
 	}
 }
@@ -166,8 +166,8 @@ extension FollowersListVC: UISearchResultsUpdating, UISearchBarDelegate {
 	func updateSearchResults(for searchController: UISearchController) {
 		guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
 		
-		isSearching = true
-		filteredFollowers = followers.filter { $0.login.lowercased().contains(filter.lowercased()) }
+		isSearching			= true
+		filteredFollowers 	= followers.filter { $0.login.lowercased().contains(filter.lowercased()) }
 		
 		updateData(on: filteredFollowers)
 	}
@@ -176,5 +176,32 @@ extension FollowersListVC: UISearchResultsUpdating, UISearchBarDelegate {
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		isSearching = false
 		updateData(on: followers)
+	}
+}
+
+
+// MARK: - Extension: FollowersListVCDelegate
+extension FollowersListVC: FollowersListVCDelegate {
+	// Get Followers for that user
+	func didRequestFollowers(for username: String) {
+		self.username 	= username
+		title			= username
+		page 			= 1
+		
+		followers.removeAll()
+		filteredFollowers.removeAll()
+		
+		if isSearching {
+			navigationItem.searchController?.searchBar.text = ""
+			navigationItem.searchController?.isActive 		= false
+			navigationItem.searchController?.dismiss(animated: false)
+			
+			isSearching = false
+		}
+		
+		//collectionView.setContentOffset(.zero, animated: true)
+		updateData(on: followers)
+		
+		getFollowers(username: username, page: page)
 	}
 }
