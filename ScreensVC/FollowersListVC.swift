@@ -52,6 +52,9 @@ class FollowersListVC: UIViewController {
 	private func configureViewController() {
 		view.backgroundColor = .systemBackground
 		navigationController?.navigationBar.prefersLargeTitles = true
+		
+		let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+		navigationItem.rightBarButtonItem = addButton
 	}
 	
 	
@@ -126,7 +129,13 @@ class FollowersListVC: UIViewController {
 		snapshot.appendSections([.main])
 		snapshot.appendItems(followers)
 		//dataSource.apply(snapshot, animatingDifferences: true)  // Funcionó bien. OK.
-		DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }  // Intentar después con esta línea. Comentar arriba. También funciona
+		DispatchQueue.main.async { self.dataSource.apply(snapshot, animatingDifferences: true) }  // Intentar después con esta línea. Comentar arriba. También funcionó. OK.
+	}
+	
+	
+	// MARK: - AddButtonTapped used in configureViewController()
+	@objc private func addButtonTapped() {
+		print("Add button tapped")
 	}
 }
 
