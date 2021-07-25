@@ -135,7 +135,39 @@ class FollowersListVC: UIViewController {
 	
 	// MARK: - AddButtonTapped used in configureViewController()
 	@objc private func addButtonTapped() {
-		print("Add button tapped")
+		showLoadingView()
+		
+		NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+			guard let self = self else { return }
+			
+			self.dismissLoadingView()
+			
+			switch result {
+			case .success(let user):
+				let favorite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+				
+				PersistanceManager.updateWith(favorite: favorite, actionType: .add) { [weak self] error in
+					guard let self = self else { return }
+					
+					guard let error = error else {
+						self.presentGFAlertOnMainThread(title: "Success!",
+														message: "This user is now in your favorites list!",
+														buttonTitle: "Excellent")
+						
+						return
+					}
+					
+					self.presentGFAlertOnMainThread(title: "Something Went Wrong",
+													message: error.rawValue,
+													buttonTitle: "OK")
+				}
+				
+			case .failure(let error):
+				self.presentGFAlertOnMainThread(title: "Something Went Wrong",
+												message: error.rawValue,
+												buttonTitle: "OK")
+			}
+		}
 	}
 }
 
