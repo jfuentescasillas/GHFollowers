@@ -9,12 +9,14 @@ import UIKit
 
 
 protocol UserInfoVCDelegate: AnyObject {
-	func didTapGitHubProfile(for user: User)
-	func didTapGetFollowers(for user: User)
+	func didRequestFollowers(for username: String)
 }
 
 
-class UserInfoVC: UIViewController {
+class UserInfoVC: GFDataLoadingVC {
+	let scrollView	= UIScrollView()
+	let contentView = UIView()
+	
 	let headerView 	= UIView()
 	let itemViewOne = UIView()
 	let itemViewTwo = UIView()
@@ -22,21 +24,22 @@ class UserInfoVC: UIViewController {
 	var itemViews 	= [UIView]()
 	
 	var username: String!
-	weak var delegate: FollowersListVCDelegate!
+	weak var delegate: UserInfoVCDelegate!
 
 	
 	// MARK: - viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		doneButton()
+		doneButtonConfiguration()
+		configureScrollView()
 		layoutUI()
 		getUserInfo()
     }
 	
 	
 	// MARK: - DoneButton methods
-	private func doneButton() {
+	private func doneButtonConfiguration() {
 		view.backgroundColor = .systemBackground  // QUITAR****
 		
 		let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
@@ -67,39 +70,50 @@ class UserInfoVC: UIViewController {
 	}
 	
 	
+	// MARK: - Configure UI Elements Methods
 	func configureUIElements(with user: User) {
-		let repoItemVC 			= GFRepoItemVC(user: user)
-		repoItemVC.delegate 	= self
-		
-		let followerItemVC 		= GFFollowerItemVC(user: user)
-		followerItemVC.delegate = self
-		
 		self.addChildVC(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
-		self.addChildVC(childVC: repoItemVC, to: self.itemViewOne)
-		self.addChildVC(childVC: followerItemVC, to: self.itemViewTwo)
-		self.dateLabel.text = "In GitHub since \(user.createdAt.convertToDisplayFormat())"	
+		self.addChildVC(childVC: GFRepoItemVC(user: user, delegate: self), to: self.itemViewOne)
+		self.addChildVC(childVC: GFFollowerItemVC(user: user, delegate: self), to: self.itemViewTwo)
+		self.dateLabel.text = "In GitHub since \(user.createdAt.convertToMonthYearFormat())"	
+	}
+	
+	
+	func configureScrollView() {
+		view.addSubview(scrollView)
+		scrollView.addSubview(contentView)
+		
+		scrollView.pinToEdges(of: view)
+		contentView.pinToEdges(of: scrollView)
+		
+		NSLayoutConstraint.activate([
+			contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+			contentView.heightAnchor.constraint(equalToConstant: view.frame.size.height + 25 )  // If "+ 25" is not added, the date label is out of screen on iPhone SE 1st Gen.
+			//contentView.heightAnchor.constraint(equalToConstant: 600)
+		])
 	}
 	
 	
 	// MARK: - LayoutUI
 	private func layoutUI() {
-		itemViews = [headerView, itemViewOne, itemViewTwo, dateLabel]
 		let padding: CGFloat 	= 20
 		let itemHeight: CGFloat = 140
 		
+		itemViews = [headerView, itemViewOne, itemViewTwo, dateLabel]
+		
 		for itemView in itemViews {
-			view.addSubview(itemView)
+			contentView.addSubview(itemView)
 			itemView.translatesAutoresizingMaskIntoConstraints = false
 			
 			NSLayoutConstraint.activate([
-				itemView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-				itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+				itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: padding),
+				itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -padding),
 			])
 		}
 		
 		NSLayoutConstraint.activate([
-			headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-			headerView.heightAnchor.constraint(equalToConstant: 180),
+			headerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+			headerView.heightAnchor.constraint(equalToConstant: 210),
 			
 			itemViewOne.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
 			itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
@@ -108,7 +122,7 @@ class UserInfoVC: UIViewController {
 			itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
 			
 			dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
-			dateLabel.heightAnchor.constraint(equalToConstant: 18),
+			dateLabel.heightAnchor.constraint(equalToConstant: 50),
 		])
 	}
 	
@@ -123,8 +137,8 @@ class UserInfoVC: UIViewController {
 }
 
 
-// MARK: - Extension UserInfoVCDelegate
-extension UserInfoVC: UserInfoVCDelegate {
+// MARK: - Extension GFRepoItemVCDelegate and GFFollowerItemVCDelegate
+extension UserInfoVC: GFRepoItemVCDelegate {
 	func didTapGitHubProfile(for user: User) {
 		guard let url = URL(string: user.htmlUrl) else {
 			presentGFAlertOnMainThread(title: "Invalid URL",
@@ -136,8 +150,10 @@ extension UserInfoVC: UserInfoVCDelegate {
 		
 		presentSafariVC(with: url)
 	}
-	
-	
+}
+
+
+extension UserInfoVC: GFFollowerItemVCDelegate {
 	func didTapGetFollowers(for user: User) {
 		guard user.followers != 0 else {
 			presentGFAlertOnMainThread(title: "No Followers",

@@ -25,34 +25,47 @@ class GFEmptyStateView: UIView {
 	}
 	
 	
-	init(message: String) {
-		super.init(frame: .zero)
+	convenience init(message: String) {
+		self.init(frame: .zero)
 		
 		messageLabel.text = message
-		
-		configure()
 	}
 	
 	
+	// MARK: - Configure Elements in view
 	private func configure() {
-		addSubview(messageLabel)
-		addSubview(logoImageView)
+		addSubviews(messageLabel, logoImageView)
 		
+		configureMessageLabel()
+		configureLogoImageView()
+	}
+	
+	
+	private func configureMessageLabel() {
 		messageLabel.numberOfLines  = 3
 		messageLabel.textColor		= .secondaryLabel
 		
-		logoImageView.image = UIImage(named: "empty-state-logo")
-		logoImageView.translatesAutoresizingMaskIntoConstraints = false
+		let messageLabelCenterYConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? -85 : -150
 		
 		NSLayoutConstraint.activate([
-			messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -100),
+			messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: messageLabelCenterYConstant),
 			messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
 			messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
-			messageLabel.heightAnchor.constraint(equalToConstant: 200),
-			
+			messageLabel.heightAnchor.constraint(equalToConstant: 200)
+		])
+	}
+	
+	
+	private func configureLogoImageView() {		
+		logoImageView.image = Images.emptyStateLogo
+		logoImageView.translatesAutoresizingMaskIntoConstraints = false
+		
+		let logoImageViewTrailingConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 150 : 170
+		
+		NSLayoutConstraint.activate([
 			logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
 			logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
-			logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 170),   // We want the image slightly to the right
+			logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: logoImageViewTrailingConstant),   // We want the image slightly to the right
 			logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 40)			// We want the image slightly under the screen
 		])
 	}
