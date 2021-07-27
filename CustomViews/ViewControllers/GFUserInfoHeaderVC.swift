@@ -83,21 +83,31 @@ class GFUserInfoHeaderVC: UIViewController {
 			bioLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: textImagePadding),
 			bioLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
 			bioLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			bioLabel.heightAnchor.constraint(equalToConstant: 60)
+			bioLabel.heightAnchor.constraint(equalToConstant: 90)
 		])
 	}
 	
 	
 	// MARK: - Configure UI elements
 	private func configureUIElements() {
-		avatarImageView.downloadImage(from: user.avatarUrl)
+		downloadAvatarImage()
+		
 		usernameLabel.text 			= user.login
 		nameLabel.text 				= user.name ?? ""
 		locationLabel.text 			= user.location ?? "No Location"
 		bioLabel.text 				= user.bio ?? "No Bio Available"
 		bioLabel.numberOfLines 		= 3
 			
-		locationImageView.image 	= UIImage(systemName: SFSymbols.location)
+		locationImageView.image 	= SFSymbols.location
 		locationImageView.tintColor = .secondaryLabel
+	}
+	
+	
+	private func downloadAvatarImage() {
+		NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] image in
+			guard let self = self else { return }
+			
+			DispatchQueue.main.async { self.avatarImageView.image = image }
+		}
 	}
 }

@@ -16,20 +16,13 @@ class SearchVC: UIViewController {
 	var isUsernameEntered: Bool { return !usernameTextField.text!.isEmpty }
 	
 	
-	// MARK: - viewWillAppear
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		// Moving this line of code to viewWill Appear deals with a bug in which the NavigationBar was involved (it disappeard when it supposed to appear)
-		navigationController?.setNavigationBarHidden(true, animated: true)
-	}
-	
-
 	// MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
 		
 		view.backgroundColor = .systemBackground
+		
+		view.addSubviews(logoImageView, usernameTextField, callToActionButton)
 		
 		configureLogoImageView()
 		configureTextField()
@@ -38,14 +31,26 @@ class SearchVC: UIViewController {
     }
 	
 	
+	// MARK: - viewWillAppear
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		usernameTextField.text = ""
+		
+		// Moving the line of code below to viewWill Appear deals with a bug in which the NavigationBar was involved (it disappeard when it supposed to appear)
+		navigationController?.setNavigationBarHidden(true, animated: true)
+	}
+	
+
 	// MARK: - Methods to Configure the Elements in the view
 	func configureLogoImageView() {
-		view.addSubview(logoImageView)
 		logoImageView.translatesAutoresizingMaskIntoConstraints = false
-		logoImageView.image = UIImage(named: "gh-logo")
+		logoImageView.image = Images.ghLogo
 		
+		let logoImageViewTopConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+				
 		NSLayoutConstraint.activate([
-			logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
+			logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: logoImageViewTopConstraintConstant),
 			logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 			logoImageView.heightAnchor.constraint(equalToConstant: 200),
 			logoImageView.widthAnchor.constraint(equalToConstant: 200)
@@ -54,7 +59,6 @@ class SearchVC: UIViewController {
 	
 	
 	func configureTextField() {
-		view.addSubview(usernameTextField)
 		usernameTextField.delegate = self
 		
 		NSLayoutConstraint.activate([
@@ -67,7 +71,6 @@ class SearchVC: UIViewController {
 	
 	
 	func configureCallToActionButton() {
-		view.addSubview(callToActionButton)
 		callToActionButton.addTarget(self, action: #selector(pushFollowersListVC), for: .touchUpInside)
 		
 		NSLayoutConstraint.activate([
@@ -88,17 +91,16 @@ class SearchVC: UIViewController {
 			return
 		}
 		
-		let followersListVC = FollowersListVC()
-		followersListVC.username = usernameTextField.text
-		followersListVC.title = usernameTextField.text
+		usernameTextField.resignFirstResponder()
 		
+		let followersListVC = FollowersListVC(username: usernameTextField.text!)		
 		navigationController?.pushViewController(followersListVC, animated: true)
 	}
 	
 	
 	// MARK: - Methods to Dismiss keyboard from screen
 	func createDismissKeyboardTapGesture() {
-		let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+		let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
 		view.addGestureRecognizer(tap)
 	}
 }
