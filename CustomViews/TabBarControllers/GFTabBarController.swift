@@ -10,6 +10,7 @@ import UIKit
 
 class GFTabBarController: UITabBarController {
 
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,7 +21,7 @@ class GFTabBarController: UITabBarController {
 	// MARK: - Initial Configuration
 	private func initialConfig() {
 		UITabBar.appearance().tintColor = .systemGreen
-		viewControllers 				= [createSearchNavContr(), createFavoritesNavContr()]
+		viewControllers 				= [createSearchNavContr(), createFavoritesNavController()]
 	}
     
 
@@ -34,7 +35,7 @@ class GFTabBarController: UITabBarController {
 	}
 	
 	
-	private func createFavoritesNavContr() -> UINavigationController {
+	private func createFavoritesNavController() -> UINavigationController {
 		let favoritesListVC 		= FavoriteListVC()
 		favoritesListVC.title 		= "Favorites"
 		favoritesListVC.tabBarItem  = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
