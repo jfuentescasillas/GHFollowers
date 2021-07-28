@@ -45,7 +45,7 @@ class GFEmptyStateView: UIView {
 		messageLabel.numberOfLines  = 3
 		messageLabel.textColor		= .secondaryLabel
 		
-		let messageLabelCenterYConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? -85 : -150
+		let messageLabelCenterYConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? -85 : -160
 		
 		NSLayoutConstraint.activate([
 			messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: messageLabelCenterYConstant),
@@ -65,8 +65,8 @@ class GFEmptyStateView: UIView {
 		NSLayoutConstraint.activate([
 			logoImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
 			logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
-			logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: logoImageViewTrailingConstant),   // We want the image slightly to the right
-			logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 40)			// We want the image slightly under the screen
+			logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: logoImageViewTrailingConstant),  // We want the image slightly to the right
+			logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 50)  // We want the image slightly under the screen
 		])
 	}
 }
