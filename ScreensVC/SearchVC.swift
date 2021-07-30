@@ -12,7 +12,7 @@ class SearchVC: UIViewController {
 	// MARK: - Properties
 	let logoImageView 		= UIImageView()
 	let usernameTextField 	= GFTextField()
-	let callToActionButton 	= GFButton(backgroundColor: .systemGreen, title: "Get Followers")
+	let callToActionButton 	= GFButton(backgroundColor: .systemGreen, title: LocalizedKeys.buttonsTitles.getFollowers)
 	var isUsernameEntered: Bool { return !usernameTextField.text!.isEmpty }
 	
 	
@@ -60,33 +60,38 @@ class SearchVC: UIViewController {
 	
 	func configureTextField() {
 		usernameTextField.delegate = self
+		let vPadding: CGFloat = 45  // Vertical padding (top/bottom/height constraints)
+		let hPadding: CGFloat = 30 // Horizontal padding (leading/trailing constraints)
 		
 		NSLayoutConstraint.activate([
-			usernameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 50),
-			usernameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-			usernameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
-			usernameTextField.heightAnchor.constraint(equalToConstant: 50)
+			usernameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: vPadding),
+			usernameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: hPadding),
+			usernameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -hPadding),
+			usernameTextField.heightAnchor.constraint(equalToConstant: vPadding)
 		])
 	}
 	
 	
 	func configureCallToActionButton() {
+		let vPadding: CGFloat = 45
+		let hPadding: CGFloat = 30
+		
 		callToActionButton.addTarget(self, action: #selector(pushFollowersListVC), for: .touchUpInside)
 		
 		NSLayoutConstraint.activate([
-			callToActionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-			callToActionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-			callToActionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
-			callToActionButton.heightAnchor.constraint(equalToConstant: 50)
+			callToActionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -vPadding),
+			callToActionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: hPadding),
+			callToActionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -hPadding),
+			callToActionButton.heightAnchor.constraint(equalToConstant: vPadding)
 		])
 	}
 	
 	
 	@objc func pushFollowersListVC() {
 		guard isUsernameEntered else {
-			presentGFAlertOnMainThread(title: "Empty Username",
-									   message: "Please enter a username, we need to know who to look for",
-									   buttonTitle: "OK")
+			presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.emptyUsernameTitle,
+									   message: LocalizedKeys.alertControllerMessages.emptyUsernameMsg,
+									   buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			
 			return
 		}

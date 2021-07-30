@@ -1,0 +1,74 @@
+/*
+ General: for buttons names
+  examples: Accept, Cancel, Back, Forward, etc.
+ 
+ Alert Controller Elements
+ UI Elements
+ */
+
+
+// MARK: - ViewControllers elements
+// VC Titles
+"favoritesVC" = "Favoritos";
+
+
+// MARK: - Alert Controller Elements
+// Alert Controller Title
+"somethingWentWrongDefault" = "Algo ha ido mal.";
+"unableToRequestDefault" 	= "Petición no pudo realizarse.";
+
+"badStuffHappenedTitle" 	= "Algo raro pasó";
+"successTitle" 				= "¡Muy Bien!";
+
+"emptyUsernameTitle"		= "Nombre De Usuario Vacío";
+"unableToRemoveTitle"		= "No pudo eliminarse";
+"invalidURLTitle"			= "URL No Válida";
+"noFollowersTitle"			= "Sin Seguidores";
+
+
+// Alert Controller Message
+"successMsg" 				= "¡Esta persona ahora está en tu lista de favoritas!";
+"emptyUsernameMsg"			= "Ingresa un nombre de usuario por favor, necesitamos saber a quién buscar.";
+"invalidURLMsg"				= "Esta persona tiene adjuntada una URL inválida.";
+"noFollowersMsg"			= "Esta persona NO tiene seguidores.";
+
+
+// General Error. Alert Controller Label Messages
+"invalidUsername"			= "Este nombre de usuario creó una petición inválida. Intenta de nuevo más tarde por favor.";
+"unableToCompleteRequest" 	= "Petición no completada. Verifica tu conexión a internet.";
+"invalidResponse" 			= "Respuesta del servidor inválida. Por favor intenta de nuevo más tarde.";
+"invalidData" 				= "Datos inválidos recibidos del servidor. Por favor intenta de nuevo más tarde.";
+"unableToFavorite"			= "Error al guardar este usuario en tu lista de favoritos. Intenta de nuevo más tarde.";
+"alreadyInFavorites"		= "Usuario ya existente en tu lista de favoritos. No será guardado.";
+
+
+// Alert Controller Button Title
+"successBtn" 				= "¡Excelente!";
+"okBtn" 	 				= "Entendido";
+"sadBtn"	 				= "Qué triste ☹️";
+
+
+// MARK: - UI Elements
+// Labels
+"noFollowers" 				= "Esta persona no tiene quien le siga 🥺 ¡Síguela! 🤓";
+"emptyState"				= "¿Sin favoritos? ¡Añádeles desde la pantalla de seguidores!";
+"publicRepos" 				= "Repos Públicos";
+"publicGists" 				= "Gists Públicos";
+"followersLbl" 				= "Seguidores";
+"followingLbl" 				= "Siguiendo";
+"inGithubSinceLbl" 			= "En GitHub desde ";
+
+
+// Button title
+"gitHubProfile" 			= "Perfil de GitHub";
+"getFollowers" 				= "Obtener Seguidores";
+
+ 
+// Default Bio Messages
+"noLocationDefault" 		= "Sin ubicación";
+"noBioDefault" 				= "No hay biografía disponible";
+
+
+// SearchViewController UI
+"searchVCTextFieldPlaceholder" = "Escribe nombre de usuario";
+"resultsTextFieldPlaceholder"  = "Busca nombre de usuario";
