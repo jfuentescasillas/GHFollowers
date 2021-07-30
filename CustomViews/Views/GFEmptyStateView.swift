@@ -34,25 +34,10 @@ class GFEmptyStateView: UIView {
 	
 	// MARK: - Configure Elements in view
 	private func configure() {
-		addSubviews(messageLabel, logoImageView)
+		addSubviews(logoImageView, messageLabel)
 		
-		configureMessageLabel()
 		configureLogoImageView()
-	}
-	
-	
-	private func configureMessageLabel() {
-		messageLabel.numberOfLines  = 3
-		messageLabel.textColor		= .secondaryLabel
-		
-		let messageLabelCenterYConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? -85 : -160
-		
-		NSLayoutConstraint.activate([
-			messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: messageLabelCenterYConstant),
-			messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
-			messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
-			messageLabel.heightAnchor.constraint(equalToConstant: 200)
-		])
+		configureMessageLabel()
 	}
 	
 	
@@ -67,6 +52,21 @@ class GFEmptyStateView: UIView {
 			logoImageView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.3),
 			logoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: logoImageViewTrailingConstant),  // We want the image slightly to the right
 			logoImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 50)  // We want the image slightly under the screen
+		])
+	}
+	
+	
+	private func configureMessageLabel() {
+		messageLabel.numberOfLines  = 4
+		messageLabel.textColor		= .secondaryLabel
+		
+		let messageLabelCenterYConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? -80 : -160
+		
+		NSLayoutConstraint.activate([
+			messageLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: messageLabelCenterYConstant),
+			messageLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
+			messageLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
+			messageLabel.heightAnchor.constraint(equalToConstant: 200)
 		])
 	}
 }

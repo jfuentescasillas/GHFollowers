@@ -82,7 +82,7 @@ class FollowersListVC: GFDataLoadingVC {
 	func configureSearchController() {
 		let searchController = UISearchController()
 		searchController.searchResultsUpdater   = self
-		searchController.searchBar.placeholder 	= "Search for a username"
+		searchController.searchBar.placeholder 	= LocalizedKeys.searchBarPlaceholder.resultsTextFieldPlaceholder
 		searchController.obscuresBackgroundDuringPresentation = false  // Background won't get obscured when searching in the searchbar
 		
 		navigationItem.searchController = searchController
@@ -105,7 +105,9 @@ class FollowersListVC: GFDataLoadingVC {
 				self.updateUI(with: followers)
 				
 			case .failure(let error):
-				self.presentGFAlertOnMainThread(title: "Bad Stuff Happened", message: error.rawValue, buttonTitle: "OK")
+				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.badStuffHappenedTitle,
+												message: error.rawValue,
+												buttonTitle: "OK")
 			}
 			
 			self.isLoadingMoreFollowers = false
@@ -119,7 +121,7 @@ class FollowersListVC: GFDataLoadingVC {
 		self.followers.append(contentsOf: followers)
 		
 		if self.followers.isEmpty {
-			let message: String = "This user does not have any followers 🥺 Go follow them 🤓"
+			let message: String = LocalizedKeys.labelsContent.noFollowers
 			
 			DispatchQueue.main.async { self.showEmptyStateView(with: message, in: self.view) }
 			
@@ -164,9 +166,9 @@ class FollowersListVC: GFDataLoadingVC {
 				self.addUserToFavorites(user: user)
 				
 			case .failure(let error):
-				self.presentGFAlertOnMainThread(title: "Something Went Wrong",
+				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
 												message: error.rawValue,
-												buttonTitle: "OK")
+												buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			}
 		}
 	}
@@ -179,16 +181,16 @@ class FollowersListVC: GFDataLoadingVC {
 			guard let self = self else { return }
 			
 			guard let error = error else {
-				self.presentGFAlertOnMainThread(title: "Success!",
-												message: "This user is now in your favorites list!",
-												buttonTitle: "Excellent")
+				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.successTitle,
+												message: LocalizedKeys.alertControllerMessages.successMsg,
+												buttonTitle: LocalizedKeys.alertControllerButtonTitle.successButtonTitle)
 				
 				return
 			}
 			
-			self.presentGFAlertOnMainThread(title: "Something Went Wrong",
+			self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
 											message: error.rawValue,
-											buttonTitle: "OK")
+											buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 		}
 	}
 }

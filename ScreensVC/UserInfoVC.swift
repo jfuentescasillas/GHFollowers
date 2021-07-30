@@ -62,9 +62,9 @@ class UserInfoVC: GFDataLoadingVC {
 				DispatchQueue.main.async { self.configureUIElements(with: user) }
 				
 			case .failure(let error):
-				self.presentGFAlertOnMainThread(title: "Something Went Wrong",
+				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
 												message: error.rawValue,
-												buttonTitle: "OK")
+												buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			}
 		}
 	}
@@ -75,7 +75,7 @@ class UserInfoVC: GFDataLoadingVC {
 		self.addChildVC(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
 		self.addChildVC(childVC: GFRepoItemVC(user: user, delegate: self), to: self.itemViewOne)
 		self.addChildVC(childVC: GFFollowerItemVC(user: user, delegate: self), to: self.itemViewTwo)
-		self.dateLabel.text = "In GitHub since \(user.createdAt.convertToMonthYearFormat())"	
+		self.dateLabel.text = LocalizedKeys.labelsContent.inGithubSinceLbl +  user.createdAt.convertToMonthYearFormat()
 	}
 	
 	
@@ -141,9 +141,9 @@ class UserInfoVC: GFDataLoadingVC {
 extension UserInfoVC: GFRepoItemVCDelegate {
 	func didTapGitHubProfile(for user: User) {
 		guard let url = URL(string: user.htmlUrl) else {
-			presentGFAlertOnMainThread(title: "Invalid URL",
-									   message: "Invalid URL attached to this user",
-									   buttonTitle: "OK")
+			presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.invalidURLTitle,
+									   message: LocalizedKeys.alertControllerMessages.invalidURLMsg,
+									   buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			
 			return
 		}
@@ -156,9 +156,9 @@ extension UserInfoVC: GFRepoItemVCDelegate {
 extension UserInfoVC: GFFollowerItemVCDelegate {
 	func didTapGetFollowers(for user: User) {
 		guard user.followers != 0 else {
-			presentGFAlertOnMainThread(title: "No Followers",
-									   message: "This User Has NO Followers",
-									   buttonTitle: "Sad Life ☹️")
+			presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.noFollowersTitle,
+									   message: LocalizedKeys.alertControllerMessages.noFollowersMsg,
+									   buttonTitle: LocalizedKeys.alertControllerButtonTitle.sadButtonTitle)
 			
 			return
 		}

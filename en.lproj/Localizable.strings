@@ -1,0 +1,74 @@
+/*
+ General: for buttons names
+  examples: Accept, Cancel, Back, Forward, etc.
+ 
+ Alert Controller Elements
+ UI Elements
+ */
+
+
+// MARK: - ViewControllers elements
+// ViewControllers Titles
+"favoritesVC" = "Favorites";
+
+
+// MARK: - Alert Controller Elements
+// Alert Controller Title
+"somethingWentWrongDefault" = "Something Went Wrong";
+"unableToRequestDefault" 	= "Unable to complete request";
+
+"badStuffHappenedTitle" 	= "Bad Stuff Happened";
+"successTitle" 				= "Success!";
+
+"emptyUsernameTitle"		= "Empty Username";
+"unableToRemoveTitle"		= "Unable To Remove";
+"invalidURLTitle"			= "Invalid URL";
+"noFollowersTitle"			= "No Followers";
+
+
+// Alert Controller Message
+"successMsg" 				= "This user is now in your favorites list!";
+"emptyUsernameMsg"			= "Please enter a username, we need to know who to look for";
+"invalidURLMsg"				= "Invalid URL attached to this user";
+"noFollowersMsg"			= "This User Has NO Followers";
+
+
+// General Error. Alert Controller Label Messages
+"invalidUsername"			= "This username created an invalid request. Please try again.";
+"unableToCompleteRequest" 	= "Unable to complete your request. Please check your internet connection.";
+"invalidResponse" 			= "Invalid response from the server. Please try again.";
+"invalidData" 				= "Invalid data received from the server. Please try again.";
+"unableToFavorite"			= "There was an error trying to save this user into favorites list. Please try again.";
+"alreadyInFavorites"		= "This user is already saved in your favorites list. This user won't be saved again.";
+
+
+// Alert Controller Button Title
+"successBtn" 				= "Excellent!";
+"okBtn" 	 				= "OK";
+"sadBtn"	 				= "Sad Life ☹️";
+
+
+// MARK: - UI Elements
+// Labels
+"noFollowers" 				= "This user has zero followers 🥺 Go follow them! 🤓";
+"emptyState"				= "No favorites?\n Add one on the follower screen!";
+"publicRepos" 				= "Public Repos";
+"publicGists" 				= "Public Gists";
+"followersLbl" 				= "Followers";
+"followingLbl" 				= "Following";
+"inGithubSinceLbl" 			= "In GitHub since ";
+
+
+// Button title
+"gitHubProfile" 			= "GitHub Profile";
+"getFollowers" 				= "Get Followers";
+
+
+// Default Bio Messages
+"noLocationDefault" 		= "No Location";
+"noBioDefault" 				= "No Bio Available";
+
+
+// SearchViewController UI
+"searchVCTextFieldPlaceholder" = "Enter Username";
+"resultsTextFieldPlaceholder"  = "Search for a username";

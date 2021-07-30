@@ -12,7 +12,7 @@ class GFDataLoadingVC: UIViewController {
 	var containerView: UIView!
 
     
-	// MARK: - Show and Dismiss Loading view
+	// MARK: - Show and Dismiss Loading view and ShowEmptyStateView
 	func showLoadingView() {
 		containerView = UIView(frame: view.bounds)
 		view.addSubview(containerView)

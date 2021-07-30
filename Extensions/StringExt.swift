@@ -26,4 +26,9 @@ extension String {
 		
 		return date.convertToMonthYearFormat()
 	}*/
+	
+	
+	public var localized: String {
+		return NSLocalizedString(self, comment: "")
+	}
 }

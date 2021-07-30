@@ -38,6 +38,6 @@ class GFTextField: UITextField {
 		autocorrectionType 	= .no
 		returnKeyType 		= .go
 		clearButtonMode		= .whileEditing  // A small "x" appears in the textfield when editing it
-		placeholder 		= "Enter Username"
+		placeholder 		= LocalizedKeys.searchBarPlaceholder.searchVCTextFieldPlaceholder
 	}
 }

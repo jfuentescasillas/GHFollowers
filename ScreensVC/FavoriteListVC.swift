@@ -32,7 +32,7 @@ class FavoriteListVC: GFDataLoadingVC {
 	
 	// MARK: - Configuration Methods
 	func configureViewController() {
-		title 					= "Favorites"
+		title 					= LocalizedKeys.vcTitles.favoritesVC
 		view.backgroundColor 	= .systemBackground
 		navigationController?.navigationBar.prefersLargeTitles = true
 	}
@@ -61,9 +61,9 @@ class FavoriteListVC: GFDataLoadingVC {
 				self.updateUI(with: favorites)
 				
 			case .failure(let error):
-				self.presentGFAlertOnMainThread(title: "Something went wrong",
+				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
 												message: error.rawValue,
-												buttonTitle: "OK")
+												buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			}
 		}
 	}
@@ -71,7 +71,7 @@ class FavoriteListVC: GFDataLoadingVC {
 	
 	private func updateUI(with favorites: [Follower]) {
 		if favorites.isEmpty {
-			self.showEmptyStateView(with: "No favorites?\n Add one on the follower screen!", in: self.view)
+			self.showEmptyStateView(with: LocalizedKeys.labelsContent.emptyState, in: self.view)
 		} else {
 			self.favorites = favorites
 			
@@ -123,9 +123,9 @@ extension FavoriteListVC: UITableViewDelegate, UITableViewDataSource {
 				return
 			}
 			
-			self.presentGFAlertOnMainThread(title: "Unable To Remove",
+			self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.unableToRemoveTitle,
 											message: error.rawValue,
-											buttonTitle: "OK")
+											buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 		}
 	}
 }
