@@ -1,0 +1,74 @@
+/*
+ General: for buttons names
+  examples: Accept, Cancel, Back, Forward, etc.
+ 
+ Alert Controller Elements
+ UI Elements
+ */
+
+
+// MARK: - ViewControllers elements
+// ViewControllers Titles
+"favoritesVC" = "Favoris";
+
+
+// MARK: - Alert Controller Elements
+// Alert Controller Title
+"somethingWentWrongDefault" = "Il y a un problème";
+"unableToRequestDefault" 	= "Demande Incomplète";
+
+"badStuffHappenedTitle" 	= "Une erreur s'est passée";
+"successTitle" 				= "Parfait!";
+
+"emptyUsernameTitle"		= "Nom d'utilisateur vide";
+"unableToRemoveTitle"		= "Impossible de supprimer";
+"invalidURLTitle"			= "URL invalide";
+"noFollowersTitle"			= "Pas de suiveur(e)s";
+
+
+// Alert Controller Message
+"successMsg" 				= "Cette personne est maintenant dans ta liste de favorites!";
+"emptyUsernameMsg"			= "Veuillez entrer un nom d'utilisateur pour rechercher quelqu'un.";
+"invalidURLMsg"				= "URL non valide associée à cette personne.";
+"noFollowersMsg"			= "Cette personne n'a PAS de suiveur(e)s.";
+
+
+// General Error. Alert Controller Label Messages
+"invalidUsername"			= "Ce nom d'utilisateur a crée une demande invalide. Réessaie plus tard.";
+"unableToCompleteRequest" 	= "Impossible de compléter ta demande. Vérifie ta connexion internet.";
+"invalidResponse" 			= "Réponse invalide du serveur. Réesaie plus tard.";
+"invalidData" 				= "Données non valides reçues du serveur. Réesaie plus tard.";
+"unableToFavorite"			= "Une erreur s'est produite lors de la tentative d'enregistrement dans la liste de favoris. Réesaie plus tard.";
+"alreadyInFavorites"		= "Cette personne est déjà enregistré dans ta liste de favoris. Elle ne sera plus réenregistrée.";
+
+
+// Alert Controller Button Title
+"successBtn" 				= "Excellent!";
+"okBtn" 	 				= "OK";
+"sadBtn"	 				= "C'est triste ☹️";
+
+
+// MARK: - UI Elements
+// Labels
+"noFollowers" 				= "Cette personne n'est pas suivie 🥺 Allez la suivre! 🤓";
+"emptyState"				= "Pas de favoris?\n Ajutes-en un sur l'écran des suiveur(e)s!";
+"publicRepos" 				= "Repos Publiques";
+"publicGists" 				= "Gists Publiques";
+"followersLbl" 				= "Suiveur(e)s";
+"followingLbl" 				= "Suivant";
+"inGithubSinceLbl" 			= "En GitHub depuis ";
+
+
+// Button title
+"gitHubProfile" 			= "Profile de GitHub";
+"getFollowers" 				= "Voir Suiveur(e)s";
+
+
+// Default Bio Messages
+"noLocationDefault" 		= "Pas de Location";
+"noBioDefault" 				= "Pas de Bio Disponible";
+
+
+// SearchViewController UI
+"searchVCTextFieldPlaceholder" = "Rechercher Nom d'Utilisateur(e)";
+"resultsTextFieldPlaceholder"  = "Rechercher des utilisateur(e)s";
