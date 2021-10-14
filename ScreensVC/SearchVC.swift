@@ -89,7 +89,7 @@ class SearchVC: UIViewController {
 	
 	@objc func pushFollowersListVC() {
 		guard isUsernameEntered else {
-			presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.emptyUsernameTitle,
+			presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.emptyUsernameTitle,
 									   message: LocalizedKeys.alertControllerMessages.emptyUsernameMsg,
 									   buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			

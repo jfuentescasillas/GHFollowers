@@ -36,6 +36,7 @@
 // General Error. Alert Controller Label Messages
 "invalidUsername"			= "Questo nome utente ha creato una richiesta non valida. Riprovare.";
 "unableToCompleteRequest" 	= "Impossibile completare la richiesta. Per favore controlla la tua conessione internet.";
+"unableToCompleteTask" 		= "Compito non completato. Per favore riprova.";
 "invalidResponse" 			= "Risposta non valida dal server. Per favore riprova.";
 "invalidData" 				= "Dati non validi ricevuti dal server. Per favore riprova.";
 "unableToFavorite"			= "Errore verificato durante il tentativo di salvare questa persona nell'elenco dei preferiti. Per favore riprova.";

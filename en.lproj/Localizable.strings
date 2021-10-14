@@ -36,6 +36,7 @@
 // General Error. Alert Controller Label Messages
 "invalidUsername"			= "This username created an invalid request. Please try again.";
 "unableToCompleteRequest" 	= "Unable to complete your request. Please check your internet connection.";
+"unableToCompleteTask" 		= "Unable to complete your task. Please try again.";
 "invalidResponse" 			= "Invalid response from the server. Please try again.";
 "invalidData" 				= "Invalid data received from the server. Please try again.";
 "unableToFavorite"			= "There was an error trying to save this user into favorites list. Please try again.";

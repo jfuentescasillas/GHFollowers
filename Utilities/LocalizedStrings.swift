@@ -33,6 +33,7 @@ struct LocalizedKeys {
 	struct alertControllerErrorMessages {
 		static let invalidUsername 				= "invalidUsername".localized
 		static let unableToCompleteRequest 		= "unableToCompleteRequest".localized
+		static let unableToCompleteTask			= "unableToCompleteTask".localized
 		static let invalidData 					= "invalidData".localized
 		static let unableToFavorite 			= "unableToFavorite".localized
 		static let alreadyInFavorites 			= "alreadyInFavorites".localized

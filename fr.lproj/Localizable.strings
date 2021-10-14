@@ -36,6 +36,7 @@
 // General Error. Alert Controller Label Messages
 "invalidUsername"			= "Ce nom d'utilisateur a crée une demande invalide. Réessaie plus tard.";
 "unableToCompleteRequest" 	= "Impossible de compléter ta demande. Vérifie ta connexion internet.";
+"unableToCompleteTask" 		= "Tâche non complétée. Réesaie plus tard.";
 "invalidResponse" 			= "Réponse invalide du serveur. Réesaie plus tard.";
 "invalidData" 				= "Données non valides reçues du serveur. Réesaie plus tard.";
 "unableToFavorite"			= "Une erreur s'est produite lors de la tentative d'enregistrement dans la liste de favoris. Réesaie plus tard.";

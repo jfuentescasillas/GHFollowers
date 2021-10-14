@@ -91,11 +91,12 @@ class FollowersListVC: GFDataLoadingVC {
 	
 	
 	// MARK: - Get Followers
+	// iOS 15 Update
 	private func getFollowers(username: String, page: Int) {
 		showLoadingView()
 		isLoadingMoreFollowers = true
 		
-		NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
+		/*NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
 			guard let self = self else { return }
 			
 			self.dismissLoadingView()
@@ -111,6 +112,36 @@ class FollowersListVC: GFDataLoadingVC {
 			}
 			
 			self.isLoadingMoreFollowers = false
+		}*/
+		
+		Task {
+			do {
+				let followers = try await NetworkManager.shared.getFollowers(for: username, page: page)
+				updateUI(with: followers)
+				dismissLoadingView()
+			} catch {
+				if let gfError = error as? GFError {
+					presentGFAlert(
+						title: LocalizedKeys.alertControllerDefaultTitles.badStuffHappenedTitle,
+						message: gfError.rawValue,
+						buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+				} else {
+					presentDefaultError()
+				}
+				
+				dismissLoadingView()
+				
+				// Another way of doing it: without caring of an specific error
+				/* guard let followers = try? await NetworkManager.shared.getFollowers(for: username, page: page) else {
+					presentDefaultError()
+					dismissLoadingView()
+					
+					return
+				}
+				
+				updateUI(with: followers)
+				dismissLoadingView() */
+			}
 		}
 	}
 	
@@ -156,8 +187,9 @@ class FollowersListVC: GFDataLoadingVC {
 	@objc private func addButtonTapped() {
 		showLoadingView()
 		
-		NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
-			guard let self = self else { return }
+		// Old Code
+		/* NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+		 guard let self = self else { return }
 			
 			self.dismissLoadingView()
 			
@@ -166,9 +198,29 @@ class FollowersListVC: GFDataLoadingVC {
 				self.addUserToFavorites(user: user)
 				
 			case .failure(let error):
-				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
+				self.presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
 												message: error.rawValue,
 												buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+			}
+		}  */
+		
+		// Since it is in an async, Task must be implemented
+		Task {
+			do {
+				let user = try await NetworkManager.shared.getUserInfo(for: username)
+				addUserToFavorites(user: user)
+				dismissLoadingView()
+			} catch {
+				if let gfError = error as? GFError {
+					presentGFAlert(
+						title: LocalizedKeys.alertControllerDefaultTitles.badStuffHappenedTitle,
+						message: gfError.rawValue,
+						buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+				} else {
+					presentDefaultError()
+				}
+				
+				dismissLoadingView()
 			}
 		}
 	}
@@ -181,16 +233,21 @@ class FollowersListVC: GFDataLoadingVC {
 			guard let self = self else { return }
 			
 			guard let error = error else {
-				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.successTitle,
-												message: LocalizedKeys.alertControllerMessages.successMsg,
-												buttonTitle: LocalizedKeys.alertControllerButtonTitle.successButtonTitle)
+				DispatchQueue.main.async {
+					self.presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.successTitle,
+										message: LocalizedKeys.alertControllerMessages.successMsg,
+										buttonTitle: LocalizedKeys.alertControllerButtonTitle.successButtonTitle)
+				}
 				
 				return
 			}
 			
-			self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
-											message: error.rawValue,
-											buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+			DispatchQueue.main.async {
+				self.presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
+									message: error.rawValue,
+									buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+				
+			}
 		}
 	}
 }
