@@ -42,7 +42,7 @@ class GFRepoItemVC: GFItemInfoVC {
 		itemInfoViewOne.set(itemInfoType: .respos, withCount: user.publicRepos)
 		itemInfoViewTwo.set(itemInfoType: .gists, withCount: user.publicGists)
 		
-		actionButton.set(backgroundColor: .systemPurple, title: LocalizedKeys.buttonsTitles.githubProfile)
+		actionButton.set(color: .systemPurple, title: LocalizedKeys.buttonsTitles.githubProfile, systemImageName: "person")
 	}
 	
 	
