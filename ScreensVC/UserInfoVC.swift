@@ -54,7 +54,8 @@ class UserInfoVC: GFDataLoadingVC {
 	
 	// MARK: - GetUserInfo
 	func getUserInfo() {
-		NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
+		// Old Code
+		/* NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
 			guard let self = self else { return }
 			
 			switch result {
@@ -62,9 +63,25 @@ class UserInfoVC: GFDataLoadingVC {
 				DispatchQueue.main.async { self.configureUIElements(with: user) }
 				
 			case .failure(let error):
-				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
+				self.presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
 												message: error.rawValue,
 												buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+			}
+		} */
+		
+		// Since now getUserInfo is in an async, Task is used
+		Task {
+			do {
+				let user = try await NetworkManager.shared.getUserInfo(for: username)
+				configureUIElements(with: user)
+			} catch {
+				if let gfError = error as? GFError {
+					presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
+								   message: gfError.rawValue,
+								   buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+				} else {
+					presentDefaultError()
+				}
 			}
 		}
 	}
@@ -141,7 +158,7 @@ class UserInfoVC: GFDataLoadingVC {
 extension UserInfoVC: GFRepoItemVCDelegate {
 	func didTapGitHubProfile(for user: User) {
 		guard let url = URL(string: user.htmlUrl) else {
-			presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.invalidURLTitle,
+			presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.invalidURLTitle,
 									   message: LocalizedKeys.alertControllerMessages.invalidURLMsg,
 									   buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			
@@ -156,7 +173,7 @@ extension UserInfoVC: GFRepoItemVCDelegate {
 extension UserInfoVC: GFFollowerItemVCDelegate {
 	func didTapGetFollowers(for user: User) {
 		guard user.followers != 0 else {
-			presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.noFollowersTitle,
+			presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.noFollowersTitle,
 									   message: LocalizedKeys.alertControllerMessages.noFollowersMsg,
 									   buttonTitle: LocalizedKeys.alertControllerButtonTitle.sadButtonTitle)
 			

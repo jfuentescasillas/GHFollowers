@@ -36,6 +36,7 @@
 // General Error. Alert Controller Label Messages
 "invalidUsername"			= "Este nombre de usuario creó una petición inválida. Intenta de nuevo más tarde por favor.";
 "unableToCompleteRequest" 	= "Petición no completada. Verifica tu conexión a internet.";
+"unableToCompleteTask" 		= "Tarea no completada. Por favor intenta de nuevo más tarde.";
 "invalidResponse" 			= "Respuesta del servidor inválida. Por favor intenta de nuevo más tarde.";
 "invalidData" 				= "Datos inválidos recibidos del servidor. Por favor intenta de nuevo más tarde.";
 "unableToFavorite"			= "Error al guardar este usuario en tu lista de favoritos. Intenta de nuevo más tarde.";

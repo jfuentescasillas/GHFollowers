@@ -12,7 +12,7 @@ class SearchVC: UIViewController {
 	// MARK: - Properties
 	let logoImageView 		= UIImageView()
 	let usernameTextField 	= GFTextField()
-	let callToActionButton 	= GFButton(backgroundColor: .systemGreen, title: LocalizedKeys.buttonsTitles.getFollowers)
+	let callToActionButton 	= GFButton(color: .systemGreen, title: LocalizedKeys.buttonsTitles.getFollowers, systemImageName: "person.3")
 	var isUsernameEntered: Bool { return !usernameTextField.text!.isEmpty }
 	
 	
@@ -89,7 +89,7 @@ class SearchVC: UIViewController {
 	
 	@objc func pushFollowersListVC() {
 		guard isUsernameEntered else {
-			presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.emptyUsernameTitle,
+			presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.emptyUsernameTitle,
 									   message: LocalizedKeys.alertControllerMessages.emptyUsernameMsg,
 									   buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
 			

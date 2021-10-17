@@ -61,9 +61,12 @@ class FavoriteListVC: GFDataLoadingVC {
 				self.updateUI(with: favorites)
 				
 			case .failure(let error):
-				self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
-												message: error.rawValue,
-												buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+				DispatchQueue.main.async {
+					self.presentGFAlert(
+						title: LocalizedKeys.alertControllerDefaultTitles.somethingWentWrongDefault,
+						message: error.rawValue,
+						buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+				}
 			}
 		}
 	}
@@ -123,9 +126,11 @@ extension FavoriteListVC: UITableViewDelegate, UITableViewDataSource {
 				return
 			}
 			
-			self.presentGFAlertOnMainThread(title: LocalizedKeys.alertControllerDefaultTitles.unableToRemoveTitle,
-											message: error.rawValue,
-											buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+			DispatchQueue.main.async {
+				self.presentGFAlert(title: LocalizedKeys.alertControllerDefaultTitles.unableToRemoveTitle,
+									message: error.rawValue,
+									buttonTitle: LocalizedKeys.alertControllerButtonTitle.okButtonTitle)
+			}
 		}
 	}
 }
