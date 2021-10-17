@@ -119,6 +119,7 @@ class FollowersListVC: GFDataLoadingVC {
 				let followers = try await NetworkManager.shared.getFollowers(for: username, page: page)
 				updateUI(with: followers)
 				dismissLoadingView()
+				isLoadingMoreFollowers = false
 			} catch {
 				if let gfError = error as? GFError {
 					presentGFAlert(
@@ -129,6 +130,7 @@ class FollowersListVC: GFDataLoadingVC {
 					presentDefaultError()
 				}
 				
+				isLoadingMoreFollowers = false
 				dismissLoadingView()
 				
 				// Another way of doing it: without caring of an specific error
